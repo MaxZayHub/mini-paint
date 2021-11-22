@@ -1,5 +1,5 @@
 import React from 'react'
-import { Form, Formik } from 'formik'
+import { Form, Formik, FormikValues } from 'formik'
 import Flex from '../styledComponents/Flex'
 import { FormInput } from '../styledComponents/FormInput'
 import FormButton from '../styledComponents/FormButton'
@@ -8,8 +8,21 @@ import CustomForm from '../styledComponents/Form'
 import { validation } from '../utils/validation'
 import FormBlock from '../styledComponents/FormBlock'
 import FormErrors from '../styledComponents/FormErrors'
+import { useTypeSelector } from '../hooks/useTypeSelector'
+import { User } from '../types/user'
+import { useDispatch } from 'react-redux'
+import { getCurrentUser } from '../actions-creators/user'
+import { useHistory } from 'react-router'
+import {Link} from 'react-router-dom'
+import FormLink from '../styledComponents/FormLink'
 
 const Login = () => {
+  const users = useTypeSelector((state) => state.users.users)
+
+  const history = useHistory()
+
+  const dispatch = useDispatch()
+
   return (
     <Flex
       width={'100%'}
@@ -25,10 +38,28 @@ const Login = () => {
         validateOnChange={false}
         validateOnBlur={false}
         validate={(values) => {
-          return validation(values)
+          const errors: FormikValues = {}
+
+          if (
+            !users.find(
+              (user:User) =>
+                user.email === values.email && user.password === values.password
+            )
+          ) {
+            errors.email = 'No such user found'
+          }
+
+          Object.assign(errors, validation(values))
+
+          return errors
         }}
         onSubmit={(values) => {
-          console.log(values)
+          const currentUser = users.find((user:User) => user.email === values.email &&
+            user.password === values.password)
+          if (currentUser) {
+            dispatch(getCurrentUser(currentUser))
+            history.push('/main')
+          }
         }}
       >
         {({ errors, touched }) => {
@@ -53,6 +84,9 @@ const Login = () => {
                   ) : null}
                 </FormBlock>
                 <FormButton>Send</FormButton>
+                <Link to={'/register'}>
+                  <FormLink>Registration</FormLink>
+                </Link>
               </CustomForm>
             </Form>
           )

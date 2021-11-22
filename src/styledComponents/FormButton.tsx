@@ -15,7 +15,6 @@ const FormButtonStyled = styled.button`
   cursor: pointer;
   transition: 0.2s;
   font-size: 16px;
-  margin-bottom: 10px;
 
   &:hover {
     background-color: rgb(248, 118, 105);

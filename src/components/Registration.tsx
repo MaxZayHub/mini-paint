@@ -9,6 +9,13 @@ import { validation } from '../utils/validation'
 import FormBlock from '../styledComponents/FormBlock'
 import FormErrors from '../styledComponents/FormErrors'
 import { useTypeSelector } from '../hooks/useTypeSelector'
+import { nanoid } from 'nanoid'
+import { useHistory } from 'react-router'
+import { useDispatch } from 'react-redux'
+import { addUserToDb } from '../context/usersContext'
+import { getCurrentUser } from '../actions-creators/user'
+import { Link } from 'react-router-dom'
+import FormLink from '../styledComponents/FormLink'
 
 interface ValidateValues {
   username?: string;
@@ -18,6 +25,10 @@ interface ValidateValues {
 
 const Registration = () => {
   const users = useTypeSelector((state) => state.users.users)
+
+  const dispatch = useDispatch()
+
+  const history = useHistory()
 
   const registerValidation = (values: ValidateValues) => {
     let errors: ValidateValues = {}
@@ -65,7 +76,15 @@ const Registration = () => {
           return registerValidation(values)
         }}
         onSubmit={(values) => {
-          console.log(values)
+          const newUser = {
+            id: nanoid(),
+            username: values.username,
+            password: values.password,
+            email: values.email
+          }
+          addUserToDb(newUser)
+          dispatch(getCurrentUser(newUser))
+          history.push('/main')
         }}
       >
         {({ errors, touched }) => {
@@ -96,6 +115,9 @@ const Registration = () => {
                   ) : null}
                 </FormBlock>
                 <FormButton>Send</FormButton>
+                <Link to={'/login'}>
+                  <FormLink>Login</FormLink>
+                </Link>
               </CustomForm>
             </Form>
           )

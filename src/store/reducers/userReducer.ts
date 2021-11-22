@@ -1,6 +1,6 @@
 import { UserAction, UserState } from '../../types/user'
 
-const GET_USER = 'GET_USER'
+const GET_CURRENT_USER = 'GET_CURRENT_USER'
 
 const initialState = {
   user: {}
@@ -8,8 +8,8 @@ const initialState = {
 
 export const userReducer = (state = initialState, action: UserAction) : UserState => {
   switch (action.type) {
-    case GET_USER :
-      return  {user: {}}
+    case GET_CURRENT_USER :
+      return  {user: action.payload}
     default:
       return  state
   }
