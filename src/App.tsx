@@ -1,6 +1,4 @@
-import React from 'react';
-import Flex from './styledComponents/Flex'
-import Login from './components/Login'
+import React from 'react'
 import Registration from './components/Registration'
 
 function App() {
@@ -8,7 +6,7 @@ function App() {
     <div className={'App'}>
       <Registration />
     </div>
-  );
+  )
 }
 
-export default App;
+export default App
