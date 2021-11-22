@@ -8,6 +8,7 @@ import Flex from '../styledComponents/Flex'
 import { validation } from '../utils/validation'
 import FormBlock from '../styledComponents/FormBlock'
 import FormErrors from '../styledComponents/FormErrors'
+import { useTypeSelector } from '../hooks/useTypeSelector'
 
 interface ValidateValues {
   username?: string;
@@ -16,6 +17,8 @@ interface ValidateValues {
 }
 
 const Registration = () => {
+  const users = useTypeSelector((state) => state.users.users)
+
   const registerValidation = (values: ValidateValues) => {
     let errors: ValidateValues = {}
     if (!values.username) {
@@ -26,8 +29,18 @@ const Registration = () => {
       )
     ) {
       errors.username = 'Invalid username'
+    } else if (
+      users.filter((user: ValidateValues) => user.username === values.username)
+        .length > 0
+    ) {
+      errors.username = 'This username is already taken'
     }
-
+    if (
+      users.filter((user: ValidateValues) => user.email === values.email)
+        .length > 0
+    ) {
+      errors.email = 'This email is already taken'
+    }
     Object.assign(errors, validation(values))
 
     return errors
