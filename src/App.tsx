@@ -1,10 +1,12 @@
 import React from 'react';
-import { useTypeSelector } from './hooks/useTypeSelector'
+import Flex from './styledComponents/Flex'
+import Login from './components/Login'
+import Registration from './components/Registration'
 
 function App() {
-  const state = useTypeSelector(state => state.user)
   return (
-    <div className="App">
+    <div className={'App'}>
+      <Registration />
     </div>
   );
 }
