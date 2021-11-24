@@ -1,6 +1,7 @@
 import React from 'react'
 import Flex from '../styledComponents/Flex'
 import Paint from './Paint'
+import ImageFeed from './ImageFeed'
 
 const Main = () => {
   return (
@@ -10,7 +11,7 @@ const Main = () => {
       alignItems={'center'}
       justifyContent={'center'}
     >
-      <Paint />
+      <ImageFeed />
     </Flex>
   )
 }
