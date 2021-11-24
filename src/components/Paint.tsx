@@ -2,28 +2,28 @@ import React, { useState } from 'react'
 import Flex from '../styledComponents/Flex'
 import PaintTools from './PaintTools'
 import PaintCanvas from './PaintCanvas'
-
-interface PaintData {
-  pencil: boolean,
-  color: string,
-  pencilWidth: string
-}
+import { PaintData } from '../types/paintData'
 
 const Paint = () => {
-  const [paintData, setPaintData] = useState({
+  const [paintData, setPaintData] = useState<PaintData>({
     pencil: true,
-    color: 'black',
-    pencilWidth: '3'
+    color: '#3d34a5',
+    pencilWidth: '10',
   })
 
   const setPaintHandler = (paintObject: PaintData) => {
-  //  setPaintData((paintData) => )
+    setPaintData((paintData) => ({ ...paintData, ...paintObject }))
   }
 
   return (
-    <Flex flexDirection={'column'} width={'80%'} alignItems={'center'}>
-      <PaintTools />
-      <PaintCanvas />
+    <Flex
+      flexDirection={'column'}
+      width={'80%'}
+      alignItems={'center'}
+      gap={'20px'}
+    >
+      <PaintTools paintData={paintData} setPaintData={setPaintHandler} />
+      <PaintCanvas paintData={paintData} setPaintData={setPaintHandler} />
     </Flex>
   )
 }
