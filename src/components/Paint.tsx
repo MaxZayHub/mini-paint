@@ -1,14 +1,17 @@
-import React, { useState } from 'react'
+import React, { useRef, useState } from 'react'
 import Flex from '../styledComponents/Flex'
 import PaintTools from './PaintTools'
 import PaintCanvas from './PaintCanvas'
 import { PaintData } from '../types/paintData'
 
 const Paint = () => {
+  const canvasRef = useRef(null)
+
   const [paintData, setPaintData] = useState<PaintData>({
     pencil: true,
-    color: '#3d34a5',
-    pencilWidth: '10',
+    color: '#000000',
+    pencilWidth: '6',
+    eraser: false,
   })
 
   const setPaintHandler = (paintObject: PaintData) => {
@@ -22,8 +25,17 @@ const Paint = () => {
       alignItems={'center'}
       gap={'20px'}
     >
-      <PaintTools paintData={paintData} setPaintData={setPaintHandler} />
-      <PaintCanvas paintData={paintData} setPaintData={setPaintHandler} />
+      <PaintTools
+        canvasRef={canvasRef}
+        paintData={paintData}
+        setPaintData={setPaintHandler}
+      />
+
+      <PaintCanvas
+        canvasRef={canvasRef}
+        paintData={paintData}
+        setPaintData={setPaintHandler}
+      />
     </Flex>
   )
 }

@@ -1,16 +1,26 @@
-import { UserAction, UserState } from '../../types/user'
+import { User, UserAction, UserState } from '../../types/user'
 
 const GET_CURRENT_USER = 'GET_CURRENT_USER'
 
-const initialState = {
-  user: {}
+const user: User = {
+  id: '',
+  username: '',
+  password: '',
+  email: '',
 }
 
-export const userReducer = (state = initialState, action: UserAction) : UserState => {
+const initialState: UserState = {
+  user: user,
+}
+
+export const userReducer = (
+  state = initialState,
+  action: UserAction
+): UserState => {
   switch (action.type) {
-    case GET_CURRENT_USER :
-      return  {user: action.payload}
+    case GET_CURRENT_USER:
+      return { user: action.payload }
     default:
-      return  state
+      return state
   }
 }

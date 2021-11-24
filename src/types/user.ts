@@ -1,15 +1,15 @@
 export interface UserState {
-  user: {}
+  user: User;
 }
 
 export interface UserAction {
-  type: string,
-  payload?: any
+  type: string;
+  payload?: any;
 }
 
 export interface User {
-  id: string,
-  username: string,
-  email: string,
-  password: string
+  id: string;
+  username: string;
+  email: string;
+  password: string;
 }

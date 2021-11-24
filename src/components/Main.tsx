@@ -4,7 +4,12 @@ import Paint from './Paint'
 
 const Main = () => {
   return (
-    <Flex width={'100%'} height={'100%'} alignItems={'center'} justifyContent={'center'}>
+    <Flex
+      width={'100%'}
+      height={'100%'}
+      alignItems={'center'}
+      justifyContent={'center'}
+    >
       <Paint />
     </Flex>
   )
