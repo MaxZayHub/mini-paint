@@ -16,6 +16,19 @@ interface Props {
   canvasRef: React.MutableRefObject<null>;
 }
 
+const StyledButton = styled.button`
+  background-color: transparent;
+  outline: none;
+  border: 1px solid gray;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: 0.2s;
+  
+  &:hover {
+    background-color: lightgray;
+  }
+`
+
 const WidthInput = styled.input`
   width: 50px;
 `
@@ -55,15 +68,17 @@ const PaintTools = (props: Props) => {
       width={'70%'}
       height={'40px'}
       alignItems={'center'}
-      justifyContent={'start'}
+      justifyContent={'center'}
       gap={'10px'}
     >
-      <button onClick={pencilHandler}>
+      <StyledButton onClick={pencilHandler}>
         <img src={pencil} width={20} height={20} alt={'pencil'} />
-      </button>
-      <input type={'color'} onChange={colorChangeHandler} />
+      </StyledButton>
+      <StyledButton onClick={eraserClickHandler}>
+        <img src={eraser} width={20} height={20} alt={'eraser'} />
+      </StyledButton>
       <Flex alignItems={'center'} gap={'10px'}>
-        <p>Pencil width: </p>
+        <p>Width: </p>
         <WidthInput
           type={'number'}
           value={props.paintData.pencilWidth}
@@ -71,12 +86,10 @@ const PaintTools = (props: Props) => {
           min={1}
         />
       </Flex>
-      <button onClick={eraserClickHandler}>
-        <img src={eraser} width={20} height={20} alt={'eraser'} />
-      </button>
-      <button onClick={saveClickHandler}>
+      <input type={'color'} onChange={colorChangeHandler} />
+      <StyledButton onClick={saveClickHandler}>
         <img src={save} width={20} height={20} alt={'save'} />
-      </button>
+      </StyledButton>
     </Flex>
   )
 }

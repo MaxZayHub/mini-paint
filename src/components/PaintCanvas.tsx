@@ -63,15 +63,15 @@ const PaintCanvas = (props: Props) => {
   }
 
   return (
-    <StyledCanvas width={'800px'} height={'600px'}>
+    <StyledCanvas width={'700px'} height={'500px'}>
       <canvas
         onMouseUp={mouseUpHandler}
         onMouseDown={mouseDownHandler}
         onMouseMove={mouseMoveHandler}
         onMouseOut={onMouseOutHandler}
         ref={props.canvasRef}
-        width={800}
-        height={600}
+        width={700}
+        height={500}
       />
     </StyledCanvas>
   )
