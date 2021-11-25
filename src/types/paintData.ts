@@ -3,4 +3,7 @@ export interface PaintData {
   color: string;
   pencilWidth: string;
   eraser: boolean;
+  rectangle: boolean,
+  circle: boolean,
+  line: boolean,
 }

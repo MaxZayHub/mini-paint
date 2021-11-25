@@ -11,7 +11,8 @@ const Main = () => {
       alignItems={'center'}
       justifyContent={'center'}
     >
-      <ImageFeed />
+      {/*<ImageFeed />*/}
+      <Paint />
     </Flex>
   )
 }

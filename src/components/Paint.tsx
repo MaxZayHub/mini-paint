@@ -12,6 +12,9 @@ const Paint = () => {
     color: '#000000',
     pencilWidth: '6',
     eraser: false,
+    rectangle: false,
+    circle: false,
+    line: false,
   })
 
   const setPaintHandler = (paintObject: PaintData) => {
