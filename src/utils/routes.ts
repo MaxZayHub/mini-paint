@@ -1,22 +1,27 @@
-import { LOGIN_ROUTE, MAIN_ROUTE, REGISTER_ROUTE } from './consts'
+import { LOGIN_ROUTE, MAIN_ROUTE, REGISTER_ROUTE, NEW_PICTURE } from './consts'
 import Login from '../components/Login'
 import Registration from '../components/Registration'
 import Main from '../components/Main'
+import Paint from '../components/Paint'
 
 export const publicRoutes = [
   {
     path: LOGIN_ROUTE,
-    Component: Login
+    Component: Login,
   },
   {
     path: REGISTER_ROUTE,
-    Component: Registration
-  }
+    Component: Registration,
+  },
 ]
 
 export const privateRoutes = [
   {
     path: MAIN_ROUTE,
-    Component: Main
-  }
+    Component: Main,
+  },
+  {
+    path: NEW_PICTURE,
+    Component: Paint,
+  },
 ]

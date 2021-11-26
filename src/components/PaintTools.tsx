@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Flex from '../styledComponents/Flex'
 import pencil from '../assets/pencil.png'
 import eraser from '../assets/eraser.png'
@@ -8,7 +8,7 @@ import styled from 'styled-components'
 import { Image } from '../types/image'
 import { nanoid } from 'nanoid'
 import { useTypeSelector } from '../hooks/useTypeSelector'
-import { addImage } from '../context/imagesContext'
+import { addImage, getOnePictureFromDb, updateImage } from '../context/imagesContext'
 import rectangle from '../assets/rectangle.png'
 import circle from '../assets/circle.png'
 import line from '../assets/line.png'
@@ -20,11 +20,14 @@ interface Props {
 }
 
 interface StyledProps {
-  active: boolean
+  active: boolean;
 }
 
-const StyledButton = styled.button<StyledProps>`
-  background-color: ${(props) => props.active ? `lightgray` : `transparent`};
+const StyledButton =
+  styled.button <
+  StyledProps >
+  `
+  background-color: ${(props) => (props.active ? `lightgray` : `transparent`)};
   outline: none;
   border: 1px solid gray;
   border-radius: 5px;
@@ -44,10 +47,22 @@ const WidthInput = styled.input`
 `
 
 const PaintTools = (props: Props) => {
+  const [updateInfo, setUpdateInfo] = useState({
+    currentId: '',
+    needUpdate: false
+  })
+
   const currentUser = useTypeSelector((state) => state.user.user)
 
   const pencilHandler = () => {
-    props.setPaintData({ ...props.paintData, pencil: true, eraser: false, line: false, rectangle: false, circle: false })
+    props.setPaintData({
+      ...props.paintData,
+      pencil: true,
+      eraser: false,
+      line: false,
+      rectangle: false,
+      circle: false,
+    })
   }
 
   const onchangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -59,29 +74,69 @@ const PaintTools = (props: Props) => {
   }
 
   const eraserClickHandler = () => {
-    props.setPaintData({ ...props.paintData, pencil: false, eraser: true, line: false, rectangle: false, circle: false })
+    props.setPaintData({
+      ...props.paintData,
+      pencil: false,
+      eraser: true,
+      line: false,
+      rectangle: false,
+      circle: false,
+    })
   }
 
   const rectangleClickHandler = () => {
-    props.setPaintData({...props.paintData, pencil: false, eraser: false, line: false, rectangle: true, circle: false})
+    props.setPaintData({
+      ...props.paintData,
+      pencil: false,
+      eraser: false,
+      line: false,
+      rectangle: true,
+      circle: false,
+    })
   }
 
   const circleClickHandler = () => {
-    props.setPaintData({...props.paintData, pencil: false, eraser: false, line: false, rectangle: false, circle: true})
+    props.setPaintData({
+      ...props.paintData,
+      pencil: false,
+      eraser: false,
+      line: false,
+      rectangle: false,
+      circle: true,
+    })
   }
 
   const lineClickHandler = () => {
-    props.setPaintData({...props.paintData, pencil: false, eraser: false, line: true, rectangle: false, circle: false})
+    props.setPaintData({
+      ...props.paintData,
+      pencil: false,
+      eraser: false,
+      line: true,
+      rectangle: false,
+      circle: false,
+    })
   }
 
   const saveClickHandler = () => {
     if (props.canvasRef.current) {
-      const newImage: Image = {
-        id: nanoid(),
-        userId: currentUser.id,
-        image: (props.canvasRef.current as HTMLCanvasElement).toDataURL(),
+      if (updateInfo.needUpdate) {
+        getOnePictureFromDb(updateInfo.currentId).then((res) => {
+          updateImage({
+            idInDb: res?.id,
+            id: updateInfo.currentId,
+            image: (props.canvasRef.current as unknown as HTMLCanvasElement).toDataURL(),
+            userId: currentUser.id
+          })
+        })
+      } else {
+        const newImage: Image = {
+          id: nanoid(),
+          userId: currentUser.id,
+          image: (props.canvasRef.current as HTMLCanvasElement).toDataURL(),
+        }
+        setUpdateInfo((updateInfo) => ({...updateInfo, needUpdate: true, currentId: newImage.id}))
+        addImage(newImage)
       }
-      addImage(newImage)
     }
   }
 
@@ -96,7 +151,10 @@ const PaintTools = (props: Props) => {
       <StyledButton onClick={pencilHandler} active={props.paintData.pencil}>
         <img src={pencil} width={20} height={20} alt={'pencil'} />
       </StyledButton>
-      <StyledButton onClick={eraserClickHandler} active={props.paintData.eraser}>
+      <StyledButton
+        onClick={eraserClickHandler}
+        active={props.paintData.eraser}
+      >
         <img src={eraser} width={20} height={20} alt={'eraser'} />
       </StyledButton>
       <Flex alignItems={'center'} gap={'10px'}>
@@ -110,10 +168,16 @@ const PaintTools = (props: Props) => {
         />
       </Flex>
       <input type={'color'} onChange={colorChangeHandler} />
-      <StyledButton onClick={rectangleClickHandler} active={props.paintData.rectangle}>
+      <StyledButton
+        onClick={rectangleClickHandler}
+        active={props.paintData.rectangle}
+      >
         <img src={rectangle} width={20} height={20} alt={'rectangle'} />
       </StyledButton>
-      <StyledButton onClick={circleClickHandler} active={props.paintData.circle}>
+      <StyledButton
+        onClick={circleClickHandler}
+        active={props.paintData.circle}
+      >
         <img src={circle} width={20} height={20} alt={'circle'} />
       </StyledButton>
       <StyledButton onClick={lineClickHandler} active={props.paintData.line}>

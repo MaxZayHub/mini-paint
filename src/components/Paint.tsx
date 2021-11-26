@@ -3,6 +3,7 @@ import Flex from '../styledComponents/Flex'
 import PaintTools from './PaintTools'
 import PaintCanvas from './PaintCanvas'
 import { PaintData } from '../types/paintData'
+import { Link } from 'react-router-dom'
 
 const Paint = () => {
   const canvasRef = useRef(null)
@@ -23,22 +24,30 @@ const Paint = () => {
 
   return (
     <Flex
-      flexDirection={'column'}
-      width={'80%'}
+      width={'100%'}
+      height={'100%'}
       alignItems={'center'}
-      gap={'20px'}
+      justifyContent={'center'}
     >
-      <PaintTools
-        canvasRef={canvasRef}
-        paintData={paintData}
-        setPaintData={setPaintHandler}
-      />
+      <Flex
+        flexDirection={'column'}
+        width={'80%'}
+        alignItems={'center'}
+        gap={'20px'}
+      >
+        <PaintTools
+          canvasRef={canvasRef}
+          paintData={paintData}
+          setPaintData={setPaintHandler}
+        />
 
-      <PaintCanvas
-        canvasRef={canvasRef}
-        paintData={paintData}
-        setPaintData={setPaintHandler}
-      />
+        <PaintCanvas
+          canvasRef={canvasRef}
+          paintData={paintData}
+          setPaintData={setPaintHandler}
+        />
+        <Link to={'/main'}>Back to main</Link>
+      </Flex>
     </Flex>
   )
 }

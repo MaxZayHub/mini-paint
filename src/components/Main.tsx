@@ -1,9 +1,20 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import Flex from '../styledComponents/Flex'
-import Paint from './Paint'
 import ImageFeed from './ImageFeed'
+import { getImagesFromDb } from '../context/imagesContext'
+import { useDispatch } from 'react-redux'
+import { getImages } from '../actions-creators/images'
+import { Link } from 'react-router-dom'
 
 const Main = () => {
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    getImagesFromDb().then((res) => {
+      dispatch(getImages(res))
+    })
+  }, [dispatch])
+
   return (
     <Flex
       width={'100%'}
@@ -11,8 +22,8 @@ const Main = () => {
       alignItems={'center'}
       justifyContent={'center'}
     >
-      {/*<ImageFeed />*/}
-      <Paint />
+      <ImageFeed />
+      <Link to={'/newPicture'}>New picture</Link>
     </Flex>
   )
 }
