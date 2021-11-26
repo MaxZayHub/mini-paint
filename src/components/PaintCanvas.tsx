@@ -8,14 +8,14 @@ interface Props {
   canvasRef: React.MutableRefObject<null>,
 }
 
-interface RectInfo {
+interface FigureInfo {
   startX: number,
   startY: number,
   imgStr: string,
 }
 
 const PaintCanvas = (props: Props) => {
-  const [rectInfo, setRectInfo] = useState<RectInfo>({
+  const [figureInfo, setFigureInfo] = useState<FigureInfo>({
     startX: 0,
     startY: 0,
     imgStr: ''
@@ -44,8 +44,8 @@ const PaintCanvas = (props: Props) => {
     ctx?.beginPath()
     if (props.paintData.pencil) {
       ctx?.moveTo(event.pageX - target.offsetLeft, event.pageY - target.offsetTop)
-    } else if (props.paintData.rectangle && props.canvasRef.current) {
-      setRectInfo(rectInfo => ({...rectInfo,
+    } else if ((props.paintData.rectangle || props.paintData.circle || props.paintData.line) && props.canvasRef.current) {
+      setFigureInfo(figureInfo => ({...figureInfo,
         imgStr: (props.canvasRef.current as unknown as HTMLCanvasElement).toDataURL(),
         startX: event.pageX - target.offsetLeft,
         startY:  event.pageY - target.offsetTop}))
@@ -59,14 +59,19 @@ const PaintCanvas = (props: Props) => {
         let current = props.canvasRef.current as HTMLCanvasElement
         ctx = current.getContext('2d')
         if (ctx) {
+          let currentX = event.pageX - target.offsetLeft
+          let currentY = event.pageY - target.offsetTop
           if (props.paintData.pencil || props.paintData.eraser) {
             draw(event.pageX - target.offsetLeft, event.pageY - target.offsetTop)
           } else if (props.paintData.rectangle) {
-            let currentX = event.pageX - target.offsetLeft
-            let currentY = event.pageY - target.offsetTop
-            let currentWidth = currentX - rectInfo.startX
-            let currentHeight = currentY - rectInfo.startY
-            drawRect(rectInfo.startX, rectInfo.startY, currentWidth, currentHeight)
+            let currentWidth = currentX - figureInfo.startX
+            let currentHeight = currentY - figureInfo.startY
+            drawRect(figureInfo.startX, figureInfo.startY, currentWidth, currentHeight)
+          } else if (props.paintData.circle) {
+            let currentRadius = Math.sqrt((currentX - figureInfo.startX) ** 2 + (currentY - figureInfo.startY) ** 2)
+            drawCircle(figureInfo.startX, figureInfo.startY, currentRadius)
+          } else if (props.paintData.line){
+            drawLine(figureInfo.startX, figureInfo.startY, currentX, currentY)
           }
         }
       }
@@ -91,12 +96,39 @@ const PaintCanvas = (props: Props) => {
   const drawRect = (x: number, y: number, w: number, h: number) => {
     const canvas = props.canvasRef.current as unknown as HTMLCanvasElement
     const img = new Image()
-    img.src = rectInfo.imgStr
+    img.src = figureInfo.imgStr
     img.onload = () => {
       ctx?.clearRect(0, 0, canvas.width, canvas.height)
       ctx?.drawImage(img, 0, 0, canvas.width, canvas.height)
       ctx?.beginPath()
       ctx?.rect(x, y, w, h)
+      ctx?.stroke()
+    }
+  }
+
+  const drawCircle = (x: number, y: number, radius: number) => {
+    const canvas = props.canvasRef.current as unknown as HTMLCanvasElement
+    const img = new Image()
+    img.src = figureInfo.imgStr
+    img.onload =() => {
+      ctx?.clearRect(0, 0, canvas.width, canvas.height)
+      ctx?.drawImage(img, 0, 0, canvas.width, canvas.height)
+      ctx?.beginPath()
+      ctx?.arc(x, y, radius, 0, 2 * Math.PI)
+      ctx?.stroke()
+    }
+  }
+
+  const drawLine = (currentX :number, currentY :number, x: number, y: number) => {
+    const canvas = props.canvasRef.current as unknown as HTMLCanvasElement
+    const img = new Image()
+    img.src = figureInfo.imgStr
+    img.onload =() => {
+      ctx?.clearRect(0, 0, canvas.width, canvas.height)
+      ctx?.drawImage(img, 0, 0, canvas.width, canvas.height)
+      ctx?.beginPath()
+      ctx?.moveTo(currentX, currentY)
+      ctx?.lineTo(x, y)
       ctx?.stroke()
     }
   }
