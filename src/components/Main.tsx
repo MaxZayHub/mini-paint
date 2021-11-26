@@ -35,8 +35,6 @@ const Main = () => {
     })
   }, [dispatch])
 
-  console.log(images)
-
   return (
     <Flex width={'100%'} alignItems={'center'} justifyContent={'center'}>
       <ImageFeed />

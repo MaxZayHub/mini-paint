@@ -2,6 +2,7 @@ import React from 'react'
 import Flex from '../styledComponents/Flex'
 import ImageBlock from './ImageBlock'
 import { useTypeSelector } from '../hooks/useTypeSelector'
+import { Image } from '../types/image'
 
 const ImageFeed = () => {
   const images = useTypeSelector((state) => state.images.images)
@@ -16,7 +17,9 @@ const ImageFeed = () => {
       margin={'100px 0 50px 0'}
     >
       {images.length > 0 ? (
-        images.map((image) => <ImageBlock image={image} />)
+        images.map((image: Image) => (
+          <ImageBlock key={image.id} image={image} />
+        ))
       ) : (
         <h2>...Loading</h2>
       )}

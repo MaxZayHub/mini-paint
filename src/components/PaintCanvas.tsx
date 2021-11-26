@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import StyledCanvas from '../styledComponents/StyledCanvas'
 import { PaintData } from '../types/paintData'
 
@@ -51,6 +51,10 @@ const PaintCanvas = (props: Props) => {
         startY:  event.pageY - target.offsetTop}))
     }
   }
+
+  useEffect(() => {
+    console.log(props.canvasRef)
+  }, [props.canvasRef.current])
 
   const mouseMoveHandler = (event: React.MouseEvent<HTMLCanvasElement>) => {
     const target = event.target as HTMLCanvasElement

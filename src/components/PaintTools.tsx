@@ -12,11 +12,15 @@ import { addImage, getOnePictureFromDb, updateImage } from '../context/imagesCon
 import rectangle from '../assets/rectangle.png'
 import circle from '../assets/circle.png'
 import line from '../assets/line.png'
+import { Canvas } from '../utils/canvas/canvas'
+import { ICanvas } from '../utils/canvas/ICanvas'
+import { Pencil } from '../utils/canvas/Pencil'
 
 interface Props {
   setPaintData: (paintObject: PaintData) => void;
   paintData: PaintData;
-  canvasRef: React.MutableRefObject<null>;
+  canvasObj: Canvas | null
+  setCanvasObj: (canvasObj: Canvas) => void
 }
 
 interface StyledProps {
@@ -55,14 +59,9 @@ const PaintTools = (props: Props) => {
   const currentUser = useTypeSelector((state) => state.user.user)
 
   const pencilHandler = () => {
-    props.setPaintData({
-      ...props.paintData,
-      pencil: true,
-      eraser: false,
-      line: false,
-      rectangle: false,
-      circle: false,
-    })
+    if (props.canvasObj) {
+      props.setCanvasObj(new Pencil(props.canvasObj.canvas))
+    }
   }
 
   const onchangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -117,28 +116,28 @@ const PaintTools = (props: Props) => {
     })
   }
 
-  const saveClickHandler = () => {
-    if (props.canvasRef.current) {
-      if (updateInfo.needUpdate) {
-        getOnePictureFromDb(updateInfo.currentId).then((res) => {
-          updateImage({
-            idInDb: res?.id,
-            id: updateInfo.currentId,
-            image: (props.canvasRef.current as unknown as HTMLCanvasElement).toDataURL(),
-            userId: currentUser.id
-          })
-        })
-      } else {
-        const newImage: Image = {
-          id: nanoid(),
-          userId: currentUser.id,
-          image: (props.canvasRef.current as HTMLCanvasElement).toDataURL(),
-        }
-        setUpdateInfo((updateInfo) => ({...updateInfo, needUpdate: true, currentId: newImage.id}))
-        addImage(newImage)
-      }
-    }
-  }
+  // const saveClickHandler = () => {
+  //   if (props.canvasRef.current) {
+  //     if (updateInfo.needUpdate) {
+  //       getOnePictureFromDb(updateInfo.currentId).then((res) => {
+  //         updateImage({
+  //           idInDb: res?.id,
+  //           id: updateInfo.currentId,
+  //           image: (props.canvasRef.current as unknown as HTMLCanvasElement).toDataURL(),
+  //           userId: currentUser.id
+  //         })
+  //       })
+  //     } else {
+  //       const newImage: Image = {
+  //         id: nanoid(),
+  //         userId: currentUser.id,
+  //         image: (props.canvasRef.current as HTMLCanvasElement).toDataURL(),
+  //       }
+  //       setUpdateInfo((updateInfo) => ({...updateInfo, needUpdate: true, currentId: newImage.id}))
+  //       addImage(newImage)
+  //     }
+  //   }
+  // }
 
   return (
     <Flex
@@ -183,7 +182,7 @@ const PaintTools = (props: Props) => {
       <StyledButton onClick={lineClickHandler} active={props.paintData.line}>
         <img src={line} width={20} height={20} alt={'line'} />
       </StyledButton>
-      <StyledButton onClick={saveClickHandler} active={false}>
+      <StyledButton active={false}>
         <img src={save} width={20} height={20} alt={'save'} />
       </StyledButton>
     </Flex>

@@ -1,9 +1,12 @@
-import React, { useRef, useState } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import Flex from '../styledComponents/Flex'
 import PaintTools from './PaintTools'
 import PaintCanvas from './PaintCanvas'
 import { PaintData } from '../types/paintData'
 import { Link } from 'react-router-dom'
+import { Canvas } from '../utils/canvas/canvas'
+import { Pencil } from '../utils/canvas/Pencil'
+import ReactDOM from 'react-dom'
 
 const Paint = () => {
   const canvasRef = useRef(null)
@@ -17,6 +20,10 @@ const Paint = () => {
     circle: false,
     line: false,
   })
+
+  const [canvasObj, setCanvasObj] = useState<Canvas | null>(null)
+
+  useEffect(() => {}, [])
 
   const setPaintHandler = (paintObject: PaintData) => {
     setPaintData((paintData) => ({ ...paintData, ...paintObject }))
@@ -36,13 +43,16 @@ const Paint = () => {
         gap={'20px'}
       >
         <PaintTools
-          canvasRef={canvasRef}
+          canvasObj={canvasObj}
           paintData={paintData}
+          setCanvasObj={setCanvasObj}
           setPaintData={setPaintHandler}
         />
 
         <PaintCanvas
           canvasRef={canvasRef}
+          // canvasObj={canvasObj}
+          // setCanvasObj={setCanvasObj}
           paintData={paintData}
           setPaintData={setPaintHandler}
         />
