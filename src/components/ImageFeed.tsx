@@ -1,22 +1,25 @@
-import React, { useEffect, useState } from 'react'
-import { getImagesFromDb } from '../context/imagesContext'
-import { Image } from '../types/image'
+import React from 'react'
 import Flex from '../styledComponents/Flex'
 import ImageBlock from './ImageBlock'
+import { useTypeSelector } from '../hooks/useTypeSelector'
 
 const ImageFeed = () => {
-  const [images, setImages] = useState<Image[]>([])
-
-
-  useEffect(() => {
-    getImagesFromDb().then((res) => {
-      setImages(res as Image[])
-    })
-  }, [])
+  const images = useTypeSelector((state) => state.images.images)
 
   return (
-    <Flex width={'70%'} flexDirection={'column'} gap={'30px'} alignItems={'center'}>
-      {images && images.map((image) => <ImageBlock image={image} />)}
+    <Flex
+      width={'70%'}
+      flexDirection={'column'}
+      gap={'30px'}
+      alignItems={'center'}
+      justifyContent={'start'}
+      margin={'100px 0 50px 0'}
+    >
+      {images.length > 0 ? (
+        images.map((image) => <ImageBlock image={image} />)
+      ) : (
+        <h2>...Loading</h2>
+      )}
     </Flex>
   )
 }

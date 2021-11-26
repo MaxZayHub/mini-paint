@@ -9,14 +9,27 @@ interface  Props {
   image: Image
 }
 
-const StyledImageBlock = styled.image`
+const StyledImageBlock = styled.div`
   background-color: rgb(232,76,61);
   border-radius: 10px;
+  cursor: pointer;
+  transition: 0.2s;
+  
+  &:hover {
+    transform: scale(1.05);
+  }
+`
+
+const ImageBackground = styled.div`
+  background-color: white;
+  width: 80%;
+  height: 60%;
 `
 
 const StyledUsername = styled.h3`
-  margin: 0;
   align-self: start;
+  margin: 10px 0 0 10px;
+  color: white;
 `
 
 
@@ -29,9 +42,11 @@ const ImageBlock = (props: Props) => {
   return (
     <StyledImageBlock>
       {user &&
-        <Flex width={'100%'} flexDirection={'column'} alignItems={'center'}>
+        <Flex width={'100%'} flexDirection={'column'} alignItems={'center'} gap={'10px'} justifyContent={'space-around'} margin={'0 0 20px 0'}>
           <StyledUsername>{user.username}</StyledUsername>
-          <img src={props.image.image} width={'80%'} height={'60%'} alt={'user project'}/>
+          <ImageBackground>
+            <img src={props.image.image} width={'80%'} height={'60%'} alt={'user project'}/>
+          </ImageBackground>
         </Flex>}
     </StyledImageBlock>
   )
