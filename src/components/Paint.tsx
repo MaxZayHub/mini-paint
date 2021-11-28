@@ -9,8 +9,6 @@ import { Pencil } from '../utils/canvas/Pencil'
 import ReactDOM from 'react-dom'
 
 const Paint = () => {
-  const canvasRef = useRef(null)
-
   const [paintData, setPaintData] = useState<PaintData>({
     pencil: true,
     color: '#000000',
@@ -22,8 +20,6 @@ const Paint = () => {
   })
 
   const [canvasObj, setCanvasObj] = useState<Canvas | null>(null)
-
-  useEffect(() => {}, [])
 
   const setPaintHandler = (paintObject: PaintData) => {
     setPaintData((paintData) => ({ ...paintData, ...paintObject }))
@@ -44,17 +40,12 @@ const Paint = () => {
       >
         <PaintTools
           canvasObj={canvasObj}
-          paintData={paintData}
           setCanvasObj={setCanvasObj}
-          setPaintData={setPaintHandler}
         />
 
         <PaintCanvas
-          canvasRef={canvasRef}
-          // canvasObj={canvasObj}
-          // setCanvasObj={setCanvasObj}
-          paintData={paintData}
-          setPaintData={setPaintHandler}
+          canvasObj={canvasObj}
+          setCanvasObj={setCanvasObj}
         />
         <Link to={'/main'}>Back to main</Link>
       </Flex>

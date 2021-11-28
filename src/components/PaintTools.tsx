@@ -15,10 +15,9 @@ import line from '../assets/line.png'
 import { Canvas } from '../utils/canvas/canvas'
 import { ICanvas } from '../utils/canvas/ICanvas'
 import { Pencil } from '../utils/canvas/Pencil'
+import { Rectangle } from '../utils/canvas/rectangle'
 
 interface Props {
-  setPaintData: (paintObject: PaintData) => void;
-  paintData: PaintData;
   canvasObj: Canvas | null
   setCanvasObj: (canvasObj: Canvas) => void
 }
@@ -51,12 +50,22 @@ const WidthInput = styled.input`
 `
 
 const PaintTools = (props: Props) => {
+  const [paintData, setPaintData] = useState<PaintData>({
+    pencil: true,
+    color: '#000000',
+    pencilWidth: '6',
+    eraser: false,
+    rectangle: false,
+    circle: false,
+    line: false,
+  })
+
   const [updateInfo, setUpdateInfo] = useState({
     currentId: '',
     needUpdate: false
   })
 
-  const currentUser = useTypeSelector((state) => state.user.user)
+  //const currentUser = useTypeSelector((state) => state.user.user)
 
   const pencilHandler = () => {
     if (props.canvasObj) {
@@ -65,16 +74,16 @@ const PaintTools = (props: Props) => {
   }
 
   const onchangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-    props.setPaintData({ ...props.paintData, pencilWidth: event.target.value })
+    setPaintData({ ...paintData, pencilWidth: event.target.value })
   }
 
   const colorChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-    props.setPaintData({ ...props.paintData, color: event.target.value })
+    setPaintData({ ...paintData, color: event.target.value })
   }
 
   const eraserClickHandler = () => {
-    props.setPaintData({
-      ...props.paintData,
+    setPaintData({
+      ...paintData,
       pencil: false,
       eraser: true,
       line: false,
@@ -84,19 +93,20 @@ const PaintTools = (props: Props) => {
   }
 
   const rectangleClickHandler = () => {
-    props.setPaintData({
-      ...props.paintData,
+    setPaintData({
+      ...paintData,
       pencil: false,
       eraser: false,
       line: false,
       rectangle: true,
       circle: false,
     })
+    props.setCanvasObj(new Rectangle(props.canvasObj?.canvas as HTMLCanvasElement))
   }
 
   const circleClickHandler = () => {
-    props.setPaintData({
-      ...props.paintData,
+    setPaintData({
+      ...paintData,
       pencil: false,
       eraser: false,
       line: false,
@@ -106,8 +116,8 @@ const PaintTools = (props: Props) => {
   }
 
   const lineClickHandler = () => {
-    props.setPaintData({
-      ...props.paintData,
+    setPaintData({
+      ...paintData,
       pencil: false,
       eraser: false,
       line: true,
@@ -139,6 +149,7 @@ const PaintTools = (props: Props) => {
   //   }
   // }
 
+
   return (
     <Flex
       width={'70%'}
@@ -147,12 +158,12 @@ const PaintTools = (props: Props) => {
       justifyContent={'center'}
       gap={'10px'}
     >
-      <StyledButton onClick={pencilHandler} active={props.paintData.pencil}>
+      <StyledButton onClick={pencilHandler} active={paintData.pencil}>
         <img src={pencil} width={20} height={20} alt={'pencil'} />
       </StyledButton>
       <StyledButton
         onClick={eraserClickHandler}
-        active={props.paintData.eraser}
+        active={paintData.eraser}
       >
         <img src={eraser} width={20} height={20} alt={'eraser'} />
       </StyledButton>
@@ -160,7 +171,7 @@ const PaintTools = (props: Props) => {
         <p>Width: </p>
         <WidthInput
           type={'number'}
-          value={props.paintData.pencilWidth}
+          value={paintData.pencilWidth}
           onChange={onchangeHandler}
           min={1}
           max={50}
@@ -169,17 +180,17 @@ const PaintTools = (props: Props) => {
       <input type={'color'} onChange={colorChangeHandler} />
       <StyledButton
         onClick={rectangleClickHandler}
-        active={props.paintData.rectangle}
+        active={paintData.rectangle}
       >
         <img src={rectangle} width={20} height={20} alt={'rectangle'} />
       </StyledButton>
       <StyledButton
         onClick={circleClickHandler}
-        active={props.paintData.circle}
+        active={paintData.circle}
       >
         <img src={circle} width={20} height={20} alt={'circle'} />
       </StyledButton>
-      <StyledButton onClick={lineClickHandler} active={props.paintData.line}>
+      <StyledButton onClick={lineClickHandler} active={paintData.line}>
         <img src={line} width={20} height={20} alt={'line'} />
       </StyledButton>
       <StyledButton active={false}>

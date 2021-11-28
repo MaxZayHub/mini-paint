@@ -1,9 +1,10 @@
 import { ICanvas } from './ICanvas'
 import React from 'react'
 
-export abstract class Canvas implements ICanvas{
+export abstract class Canvas {
   public canvas: HTMLCanvasElement
   public ctx:  CanvasRenderingContext2D | null
+  protected mouseDown: boolean = false
 
   protected constructor(_canvas: HTMLCanvasElement) {
     this.canvas = _canvas
@@ -26,4 +27,5 @@ export abstract class Canvas implements ICanvas{
   abstract mouseDownHandler(event: React.MouseEvent<HTMLCanvasElement>) : void
   abstract mouseMoveHandler(event: React.MouseEvent<HTMLCanvasElement>) : void
   abstract mouseOutHandler(event: React.MouseEvent<HTMLCanvasElement>) : void
+  abstract draw(x: number, y: number) : void
 }
