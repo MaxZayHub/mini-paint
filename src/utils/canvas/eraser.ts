@@ -1,32 +1,30 @@
 import { Canvas } from './canvas'
 import React from 'react'
 
-export class Pencil extends Canvas {
-  constructor(_canvas: HTMLCanvasElement, _color: string, _width: number) {
+export class Eraser extends Canvas {
+  constructor(_canvas: HTMLCanvasElement, _width: number) {
     super(_canvas)
     if (this.ctx) {
-      this.ctx.strokeStyle = _color
       this.ctx.lineWidth = _width
+      this.ctx.strokeStyle = '#ffffff'
     }
   }
 
-  setColor(color: string) {
-    if (this.ctx) {
-      this.ctx.strokeStyle = color
-    }
-  }
-
-  setWidth(width: number) {
+  setWidth(width: number): void {
     if (this.ctx) {
       this.ctx.lineWidth = width
     }
   }
-
-  mouseUpHandler(){
-    this.mouseDown = false
+  
+  setColor(color: string): void {
   }
 
-  mouseDownHandler(event: React.MouseEvent<HTMLCanvasElement>) {
+  draw(x: number, y: number): void {
+    this.ctx?.lineTo(x, y)
+    this.ctx?.stroke()
+  }
+
+  mouseDownHandler(event: React.MouseEvent<HTMLCanvasElement>): void {
     const target = event.target as HTMLCanvasElement
     this.mouseDown = true
     if (this.ctx) {
@@ -35,22 +33,20 @@ export class Pencil extends Canvas {
     }
   }
 
-  mouseMoveHandler(event: React.MouseEvent<HTMLCanvasElement>){
+  mouseMoveHandler(event: React.MouseEvent<HTMLCanvasElement>): void {
     const target = event.target as HTMLCanvasElement
     if (this.mouseDown) {
       let currentX = event.pageX - target.offsetLeft
       let currentY = event.pageY - target.offsetTop
       this.draw(currentX, currentY)
     }
-
   }
 
-  mouseOutHandler(){
+  mouseOutHandler(event: React.MouseEvent<HTMLCanvasElement>): void {
     this.mouseDown = false
   }
 
-  draw(x: number, y:  number) {
-    this.ctx?.lineTo(x, y)
-    this.ctx?.stroke()
+  mouseUpHandler(event: React.MouseEvent<HTMLCanvasElement>): void {
+    this.mouseDown = false
   }
 }

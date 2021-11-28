@@ -5,17 +5,15 @@ import eraser from '../assets/eraser.png'
 import save from '../assets/save.png'
 import { PaintData } from '../types/paintData'
 import styled from 'styled-components'
-import { Image } from '../types/image'
-import { nanoid } from 'nanoid'
-import { useTypeSelector } from '../hooks/useTypeSelector'
-import { addImage, getOnePictureFromDb, updateImage } from '../context/imagesContext'
 import rectangle from '../assets/rectangle.png'
 import circle from '../assets/circle.png'
 import line from '../assets/line.png'
 import { Canvas } from '../utils/canvas/canvas'
-import { ICanvas } from '../utils/canvas/ICanvas'
 import { Pencil } from '../utils/canvas/Pencil'
 import { Rectangle } from '../utils/canvas/rectangle'
+import { Eraser } from '../utils/canvas/eraser'
+import { Circle } from '../utils/canvas/circle'
+import { Line } from '../utils/canvas/line'
 
 interface Props {
   canvasObj: Canvas | null
@@ -68,17 +66,29 @@ const PaintTools = (props: Props) => {
   //const currentUser = useTypeSelector((state) => state.user.user)
 
   const pencilHandler = () => {
+    setPaintData({
+      ...paintData,
+      pencil: true,
+      eraser: false,
+      line: false,
+      rectangle: false,
+      circle: false,
+    })
     if (props.canvasObj) {
-      props.setCanvasObj(new Pencil(props.canvasObj.canvas))
+      props.setCanvasObj(new Pencil(props.canvasObj?.canvas as HTMLCanvasElement, paintData.color, parseInt(paintData.pencilWidth, 10)))
     }
   }
 
   const onchangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     setPaintData({ ...paintData, pencilWidth: event.target.value })
+    if (props.canvasObj) {
+      props.canvasObj.setWidth(parseInt(event.target.value, 10))
+    }
   }
 
   const colorChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     setPaintData({ ...paintData, color: event.target.value })
+    props.canvasObj?.setColor(event.target.value)
   }
 
   const eraserClickHandler = () => {
@@ -90,6 +100,9 @@ const PaintTools = (props: Props) => {
       rectangle: false,
       circle: false,
     })
+    if (props.canvasObj) {
+      props.setCanvasObj(new Eraser(props.canvasObj?.canvas as HTMLCanvasElement, parseInt(paintData.pencilWidth, 10)))
+    }
   }
 
   const rectangleClickHandler = () => {
@@ -101,7 +114,7 @@ const PaintTools = (props: Props) => {
       rectangle: true,
       circle: false,
     })
-    props.setCanvasObj(new Rectangle(props.canvasObj?.canvas as HTMLCanvasElement))
+    props.setCanvasObj(new Rectangle(props.canvasObj?.canvas as HTMLCanvasElement, paintData.color, parseInt(paintData.pencilWidth, 10)))
   }
 
   const circleClickHandler = () => {
@@ -113,6 +126,7 @@ const PaintTools = (props: Props) => {
       rectangle: false,
       circle: true,
     })
+    props.setCanvasObj(new Circle(props.canvasObj?.canvas as HTMLCanvasElement, paintData.color, parseInt(paintData.pencilWidth, 10)))
   }
 
   const lineClickHandler = () => {
@@ -124,6 +138,7 @@ const PaintTools = (props: Props) => {
       rectangle: false,
       circle: false,
     })
+    props.setCanvasObj(new Line(props.canvasObj?.canvas as HTMLCanvasElement, paintData.color, parseInt(paintData.pencilWidth, 10)))
   }
 
   // const saveClickHandler = () => {

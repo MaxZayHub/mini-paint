@@ -1,7 +1,7 @@
 import { Canvas } from './canvas'
 import React from 'react'
 
-export class Rectangle extends Canvas {
+export class Line extends Canvas {
   private imgStr: string = ''
   private startX: number = 0
   private startY: number = 0
@@ -14,25 +14,15 @@ export class Rectangle extends Canvas {
     }
   }
 
-  setWidth(width: number): void {
-    if (this.ctx) {
-      this.ctx.lineWidth = width
-    }
-  }
-  setColor(color: string): void {
-    if (this.ctx) {
-      this.ctx.strokeStyle = color
-    }
-  }
-
   draw(x: number, y: number): void {
     const img = new Image()
     img.src = this.imgStr
-    img.onload =() => {
+    img.onload = () => {
       this.ctx?.clearRect(0, 0, this.canvas.width, this.canvas.height)
       this.ctx?.drawImage(img, 0, 0, this.canvas.width, this.canvas.height)
       this.ctx?.beginPath()
-      this.ctx?.rect(this.startX, this.startY, x, y)
+      this.ctx?.moveTo(this.startX, this.startY)
+      this.ctx?.lineTo(x, y)
       this.ctx?.stroke()
     }
   }
@@ -47,13 +37,11 @@ export class Rectangle extends Canvas {
   }
 
   mouseMoveHandler(event: React.MouseEvent<HTMLCanvasElement>): void {
+    const target = event.target as HTMLCanvasElement
     if (this.mouseDown) {
-      const target = event.target as HTMLCanvasElement
       let currentX = event.pageX - target.offsetLeft
       let currentY = event.pageY - target.offsetTop
-      let currentWidth = currentX - this.startX
-      let currentHeight = currentY - this.startY
-      this.draw(currentWidth, currentHeight)
+      this.draw(currentX, currentY)
     }
   }
 
@@ -64,4 +52,16 @@ export class Rectangle extends Canvas {
   mouseUpHandler(event: React.MouseEvent<HTMLCanvasElement>): void {
     this.mouseDown = false
   }
+
+  setWidth(width: number): void {
+    if (this.ctx) {
+      this.ctx.lineWidth = width
+    }
+  }
+  setColor(color: string): void {
+    if (this.ctx) {
+      this.ctx.strokeStyle = color
+    }
+  }
+
 }

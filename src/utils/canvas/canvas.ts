@@ -1,4 +1,3 @@
-import { ICanvas } from './ICanvas'
 import React from 'react'
 
 export abstract class Canvas {
@@ -11,18 +10,8 @@ export abstract class Canvas {
     this.ctx = _canvas.getContext('2d')
   }
 
-  setColor(color: string) {
-    if (this.ctx) {
-      this.ctx.fillStyle = color
-    }
-  }
-
-  setWidth(width: number) {
-    if (this.ctx) {
-      this.ctx.lineWidth = width
-    }
-  }
-
+  abstract setWidth(width: number) : void
+  abstract setColor(color: string) : void
   abstract mouseUpHandler(event: React.MouseEvent<HTMLCanvasElement>) : void
   abstract mouseDownHandler(event: React.MouseEvent<HTMLCanvasElement>) : void
   abstract mouseMoveHandler(event: React.MouseEvent<HTMLCanvasElement>) : void

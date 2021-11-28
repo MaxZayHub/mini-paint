@@ -1,6 +1,5 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react'
+import React, { useCallback} from 'react'
 import StyledCanvas from '../styledComponents/StyledCanvas'
-import { PaintData } from '../types/paintData'
 import { Canvas } from '../utils/canvas/canvas'
 import { Pencil } from '../utils/canvas/Pencil'
 
@@ -9,22 +8,10 @@ interface Props {
   setCanvasObj: (obj: Canvas) => void
 }
 
-interface FigureInfo {
-  startX: number,
-  startY: number,
-  imgStr: string,
-}
-
 const PaintCanvas = (props: Props) => {
-  const [figureInfo, setFigureInfo] = useState<FigureInfo>({
-    startX: 0,
-    startY: 0,
-    imgStr: ''
-  })
-
   const measureRef = useCallback(node => {
     if (node) {
-      props.setCanvasObj(new Pencil(node as HTMLCanvasElement))
+      props.setCanvasObj(new Pencil(node as HTMLCanvasElement, '#000000', 6))
     }
   },[])
 
