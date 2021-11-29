@@ -8,6 +8,7 @@ import styled from 'styled-components'
 import rectangle from '../assets/rectangle.png'
 import circle from '../assets/circle.png'
 import line from '../assets/line.png'
+import polygon from '../assets/hexagon.png'
 import { Canvas } from '../utils/canvas/canvas'
 import { Pencil } from '../utils/canvas/Pencil'
 import { Rectangle } from '../utils/canvas/rectangle'
@@ -20,6 +21,7 @@ import { useTypeSelector } from '../hooks/useTypeSelector'
 import { Image } from '../types/image'
 import { nanoid } from 'nanoid'
 import { Star } from '../utils/canvas/star'
+import { Polygon } from '../utils/canvas/polygon'
 
 interface Props {
   canvasObj: Canvas | null
@@ -62,7 +64,8 @@ const PaintTools = (props: Props) => {
     rectangle: false,
     circle: false,
     line: false,
-    star: false
+    star: false,
+    polygon: false
   })
 
   const [updateInfo, setUpdateInfo] = useState({
@@ -80,7 +83,8 @@ const PaintTools = (props: Props) => {
       line: false,
       rectangle: false,
       circle: false,
-      star: false
+      star: false,
+      polygon: false
     })
     if (props.canvasObj) {
       props.setCanvasObj(new Pencil(props.canvasObj?.canvas as HTMLCanvasElement, paintData.color, parseInt(paintData.pencilWidth, 10)))
@@ -107,7 +111,8 @@ const PaintTools = (props: Props) => {
       line: false,
       rectangle: false,
       circle: false,
-      star: false
+      star: false,
+      polygon: false
     })
     if (props.canvasObj) {
       props.setCanvasObj(new Eraser(props.canvasObj?.canvas as HTMLCanvasElement, parseInt(paintData.pencilWidth, 10)))
@@ -122,7 +127,8 @@ const PaintTools = (props: Props) => {
       line: false,
       rectangle: true,
       circle: false,
-      star: false
+      star: false,
+      polygon: false
     })
     props.setCanvasObj(new Rectangle(props.canvasObj?.canvas as HTMLCanvasElement, paintData.color, parseInt(paintData.pencilWidth, 10)))
   }
@@ -135,7 +141,8 @@ const PaintTools = (props: Props) => {
       line: false,
       rectangle: false,
       circle: true,
-      star: false
+      star: false,
+      polygon: false
     })
     props.setCanvasObj(new Circle(props.canvasObj?.canvas as HTMLCanvasElement, paintData.color, parseInt(paintData.pencilWidth, 10)))
   }
@@ -148,7 +155,8 @@ const PaintTools = (props: Props) => {
       line: true,
       rectangle: false,
       circle: false,
-      star: false
+      star: false,
+      polygon: false
     })
     props.setCanvasObj(new Line(props.canvasObj?.canvas as HTMLCanvasElement, paintData.color, parseInt(paintData.pencilWidth, 10)))
   }
@@ -161,9 +169,24 @@ const PaintTools = (props: Props) => {
       line: false,
       rectangle: false,
       circle: false,
-      star: true
+      star: true,
+      polygon: false
     })
     props.setCanvasObj(new Star(props.canvasObj?.canvas as HTMLCanvasElement, paintData.color, parseInt(paintData.pencilWidth, 10)))
+  }
+
+  const polygonClickHandler = () => {
+    setPaintData({
+      ...paintData,
+      pencil: false,
+      eraser: false,
+      line: false,
+      rectangle: false,
+      circle: false,
+      star: false,
+      polygon: true
+    })
+    props.setCanvasObj(new Polygon(props.canvasObj?.canvas as HTMLCanvasElement, paintData.color, parseInt(paintData.pencilWidth, 10)))
   }
 
   const saveClickHandler = () => {
@@ -237,6 +260,9 @@ const PaintTools = (props: Props) => {
       </StyledButton>
       <StyledButton onClick={starClickHandler} active={paintData.star}>
         <img src={star} width={20} height={20} alt={'star'} />
+      </StyledButton>
+      <StyledButton onClick={polygonClickHandler} active={paintData.polygon}>
+        <img src={polygon} width={20} height={20} alt={'polygon'} />
       </StyledButton>
       <StyledButton onClick={saveClickHandler} active={false}>
         <img src={save} width={20} height={20} alt={'save'} />

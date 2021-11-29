@@ -7,4 +7,5 @@ export interface PaintData {
   circle: boolean;
   line: boolean;
   star: boolean;
+  polygon: boolean;
 }
