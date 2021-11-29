@@ -4,6 +4,7 @@ import PaintTools from './PaintTools'
 import PaintCanvas from './PaintCanvas'
 import { Link } from 'react-router-dom'
 import { Canvas } from '../utils/canvas/canvas'
+import FormLink from '../styledComponents/FormLink'
 
 const Paint = () => {
   const [canvasObj, setCanvasObj] = useState<Canvas | null>(null)
@@ -21,16 +22,12 @@ const Paint = () => {
         alignItems={'center'}
         gap={'20px'}
       >
-        <PaintTools
-          canvasObj={canvasObj}
-          setCanvasObj={setCanvasObj}
-        />
+        <PaintTools canvasObj={canvasObj} setCanvasObj={setCanvasObj} />
 
-        <PaintCanvas
-          canvasObj={canvasObj}
-          setCanvasObj={setCanvasObj}
-        />
-        <Link to={'/main'}>Back to main</Link>
+        <PaintCanvas canvasObj={canvasObj} setCanvasObj={setCanvasObj} />
+        <Link to={'/main'} style={{ textDecoration: 'none' }}>
+          <FormLink> Back to main</FormLink>
+        </Link>
       </Flex>
     </Flex>
   )

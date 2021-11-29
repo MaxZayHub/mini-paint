@@ -9,7 +9,7 @@ const FormButtonStyled = styled.button`
   width: 80px;
   height: 28px;
   border: none;
-  background-color: rgb(232, 76, 61);
+  background-color: ${(props) => props.theme.colors.formSubmitButtonBackground};
   border-radius: 5px;
   color: white;
   cursor: pointer;
@@ -17,7 +17,8 @@ const FormButtonStyled = styled.button`
   font-size: 16px;
 
   &:hover {
-    background-color: rgb(248, 118, 105);
+    background-color: ${(props) =>
+      props.theme.colors.formSubmitButtonHoverBackground};
   }
 `
 

@@ -10,7 +10,7 @@ interface  Props {
 }
 
 const StyledImageBlock = styled.div`
-  background-color: rgb(232,76,61);
+  background-color: ${props => props.theme.colors.imageFeedBackground};
   border-radius: 10px;
   cursor: pointer;
   transition: 0.2s;
@@ -31,7 +31,6 @@ const StyledUsername = styled.h3`
   margin: 10px 0 0 10px;
   color: white;
 `
-
 
 
 const ImageBlock = (props: Props) => {

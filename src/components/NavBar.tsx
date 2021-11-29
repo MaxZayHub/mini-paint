@@ -7,7 +7,7 @@ import { getCurrentUser } from '../actions-creators/user'
 const StyledNavBar = styled.div`
   width: 100%;
   height: 50px;
-  background-color: rgb(232, 76, 61);
+  background-color: ${(props) => props.theme.colors.navBarBackground};
   position: absolute;
   top: 0;
 `
@@ -31,7 +31,7 @@ const StyledBlock = styled.div`
 const StyledButton = styled.button`
   width: auto;
   height: 50%;
-  background-color: white;
+  background-color: ${(props) => props.theme.colors.logOutButtonBackground};
   color: rgb(232, 76, 61);
   outline: none;
   border-radius: 10px;

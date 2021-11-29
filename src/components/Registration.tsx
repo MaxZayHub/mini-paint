@@ -80,7 +80,7 @@ const Registration = () => {
             id: nanoid(),
             username: values.username,
             password: values.password,
-            email: values.email
+            email: values.email,
           }
           addUserToDb(newUser)
           dispatch(getCurrentUser(newUser))
@@ -115,7 +115,7 @@ const Registration = () => {
                   ) : null}
                 </FormBlock>
                 <FormButton>Send</FormButton>
-                <Link to={'/login'}>
+                <Link to={'/login'} style={{ textDecoration: 'none' }}>
                   <FormLink>Login</FormLink>
                 </Link>
               </CustomForm>

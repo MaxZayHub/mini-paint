@@ -2,22 +2,18 @@ import React from 'react'
 import styled from 'styled-components'
 
 interface Props {
-  children?: React.ReactNode
+  children?: React.ReactNode;
 }
 
 const FormTitleStyled = styled.h2`
   margin: 10px 0 0 0;
   font-family: 'Roboto', sans-serif;
   user-select: none;
+  color: ${(props) => props.theme.fontColor.formTitleColor};
 `
 
-
-const FormTitle = (props:Props) => {
-  return (
-    <FormTitleStyled>
-      {props.children}
-    </FormTitleStyled>
-  )
+const FormTitle = (props: Props) => {
+  return <FormTitleStyled>{props.children}</FormTitleStyled>
 }
 
 export default FormTitle

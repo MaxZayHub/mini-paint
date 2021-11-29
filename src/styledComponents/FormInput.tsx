@@ -1,4 +1,3 @@
-import React from 'react'
 import styled from 'styled-components'
 import FilteredPropsInputField from './FilteredPropsInputField'
 
@@ -14,7 +13,9 @@ export const FormInput = styled(FilteredPropsInputField)`
   font-size: 16px;
   font-family: 'Roboto', sans-serif;
   font-weight: bold;
-  
+  background-color: ${(props) => props.theme.colors.formInput};
+  color: ${(props) => props.theme.fontColor.formInput};
+
   &:focus {
     border: none;
     box-shadow: 0 0 7px gray;

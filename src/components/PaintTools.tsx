@@ -36,7 +36,7 @@ const StyledButton =
   styled.button <
   StyledProps >
   `
-  background-color: ${(props) => (props.active ? `lightgray` : `transparent`)};
+  background-color: ${(props) => (props.active ? props.theme.colors.paintToolsActiveBackground : props.theme.colors.paintToolsBackground)};
   outline: none;
   border: 1px solid gray;
   border-radius: 5px;

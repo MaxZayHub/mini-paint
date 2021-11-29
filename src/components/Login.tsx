@@ -13,7 +13,7 @@ import { User } from '../types/user'
 import { useDispatch } from 'react-redux'
 import { getCurrentUser } from '../actions-creators/user'
 import { useHistory } from 'react-router'
-import {Link} from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import FormLink from '../styledComponents/FormLink'
 
 const Login = () => {
@@ -42,7 +42,7 @@ const Login = () => {
 
           if (
             !users.find(
-              (user:User) =>
+              (user: User) =>
                 user.email === values.email && user.password === values.password
             )
           ) {
@@ -54,8 +54,10 @@ const Login = () => {
           return errors
         }}
         onSubmit={(values) => {
-          const currentUser = users.find((user:User) => user.email === values.email &&
-            user.password === values.password)
+          const currentUser = users.find(
+            (user: User) =>
+              user.email === values.email && user.password === values.password
+          )
           if (currentUser) {
             dispatch(getCurrentUser(currentUser))
             history.push('/main')
@@ -84,7 +86,7 @@ const Login = () => {
                   ) : null}
                 </FormBlock>
                 <FormButton>Send</FormButton>
-                <Link to={'/register'}>
+                <Link to={'/register'} style={{ textDecoration: 'none' }}>
                   <FormLink>Registration</FormLink>
                 </Link>
               </CustomForm>

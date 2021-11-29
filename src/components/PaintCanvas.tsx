@@ -8,6 +8,7 @@ interface Props {
   setCanvasObj: (obj: Canvas) => void
 }
 
+
 const PaintCanvas = (props: Props) => {
   const measureRef = useCallback(node => {
     if (node) {
@@ -18,6 +19,7 @@ const PaintCanvas = (props: Props) => {
   return (
     <StyledCanvas width={'700px'} height={'500px'}>
       <canvas
+        style={{backgroundColor: 'white'}}
         onMouseUp={props.canvasObj?.mouseUpHandler.bind(props.canvasObj)}
         onMouseDown={props.canvasObj?.mouseDownHandler.bind(props.canvasObj)}
         onMouseMove={props.canvasObj?.mouseMoveHandler.bind(props.canvasObj)}

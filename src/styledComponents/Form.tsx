@@ -9,9 +9,9 @@ interface Props {
 
 const FormStyled = styled.div`
   width: 400px;
-  background-color: #ececec;
-  border: 2px solid #dcdcdc;
-  box-shadow: 0 0 10px lightgray;
+  background-color: ${(props) => props.theme.colors.formBackground};
+  border: 2px solid ${props => props.theme.border.formBorder};
+  box-shadow: 0 0 10px ${props => props.theme.shadowBorder.formShadowBorder};
   border-radius: 10px;
 `
 

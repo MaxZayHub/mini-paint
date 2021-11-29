@@ -14,6 +14,7 @@ const Canvas =
   box-shadow: 0 0 10px gray;
   width: ${(props) => props.width};
   height: ${(props) => props.height};
+  background-color: white;
 `
 
 const StyledCanvas = (props: Props) => {

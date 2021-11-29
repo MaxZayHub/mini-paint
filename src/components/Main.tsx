@@ -9,7 +9,7 @@ import styled from 'styled-components'
 import { useTypeSelector } from '../hooks/useTypeSelector'
 
 const StyledButton = styled.button`
-  background-color: rgb(232, 76, 61);
+  background-color: ${(props) => props.theme.colors.newPictureButton};
   outline: none;
   border: none;
   height: 2rem;
@@ -27,8 +27,6 @@ const StyledButton = styled.button`
 const Main = () => {
   const dispatch = useDispatch()
 
-  const images = useTypeSelector((state) => state.images.images)
-
   useEffect(() => {
     getImagesFromDb().then((res) => {
       dispatch(getImages(res))
@@ -36,7 +34,12 @@ const Main = () => {
   }, [dispatch])
 
   return (
-    <Flex width={'100%'} alignItems={'center'} justifyContent={'center'}>
+    <Flex
+      width={'100%'}
+      alignItems={'center'}
+      justifyContent={'center'}
+      gap={'30px'}
+    >
       <ImageFeed />
       <Link
         to={'/newPicture'}
