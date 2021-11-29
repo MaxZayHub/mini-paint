@@ -1,8 +1,13 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import styled from 'styled-components'
 import { useTypeSelector } from '../hooks/useTypeSelector'
 import { useDispatch } from 'react-redux'
 import { getCurrentUser } from '../actions-creators/user'
+import Switch from 'react-switch'
+import moon from '../assets/moon.png'
+import sun from '../assets/sun.png'
+import Flex from '../styledComponents/Flex'
+import { ThemeContext } from '../App'
 
 const StyledNavBar = styled.div`
   width: 100%;
@@ -28,6 +33,12 @@ const StyledBlock = styled.div`
   margin-right: 1%;
 `
 
+const StyledSwitch = styled.div`
+  float: right;
+  margin-right: 20px;
+  margin-top: 3px;
+`
+
 const StyledButton = styled.button`
   width: auto;
   height: 50%;
@@ -46,24 +57,59 @@ const StyledButton = styled.button`
 `
 
 const NavBar = () => {
+  const themeContext = useContext(ThemeContext)
   const currentUser = useTypeSelector((state) => state.user.user)
-
   const isUserLogin = currentUser.email !== ''
-
   const dispatch = useDispatch()
 
   const logOutHandler = () => {
     dispatch(getCurrentUser({ id: '', username: '', password: '', email: '' }))
   }
 
+  const switchOnChangeHandler = () => {
+    themeContext?.setChecked(!themeContext?.checked)
+  }
+  console.log(themeContext?.checked)
+
   return (
     <StyledNavBar>
-      {isUserLogin && (
-        <StyledBlock>
-          <StyledUserName>{currentUser.username}</StyledUserName>
-          <StyledButton onClick={logOutHandler}>Log out</StyledButton>
-        </StyledBlock>
-      )}
+      <StyledBlock>
+        <StyledSwitch>
+          {themeContext && (
+            <Switch
+              onColor={'#b65151'}
+              onChange={switchOnChangeHandler}
+              checked={themeContext?.checked}
+              uncheckedIcon={
+                <Flex
+                  width={'100%'}
+                  height={'100%'}
+                  alignItems={'center'}
+                  justifyContent={'center'}
+                >
+                  <img src={moon} alt={'dark mode'} width={20} height={20} />
+                </Flex>
+              }
+              checkedIcon={
+                <Flex
+                  width={'100%'}
+                  height={'100%'}
+                  alignItems={'center'}
+                  justifyContent={'center'}
+                >
+                  <img src={sun} alt={'light mode'} width={20} height={20} />
+                </Flex>
+              }
+            />
+          )}
+        </StyledSwitch>
+        {isUserLogin && (
+          <>
+            <StyledUserName>{currentUser.username}</StyledUserName>
+            <StyledButton onClick={logOutHandler}>Log out</StyledButton>
+          </>
+        )}
+      </StyledBlock>
     </StyledNavBar>
   )
 }

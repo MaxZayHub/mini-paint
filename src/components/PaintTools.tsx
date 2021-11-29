@@ -32,6 +32,10 @@ interface StyledProps {
   active: boolean;
 }
 
+const StyledText = styled.p`
+  color: ${props => props.theme.fontColor.formInput};
+`
+
 const StyledButton =
   styled.button <
   StyledProps >
@@ -233,7 +237,7 @@ const PaintTools = (props: Props) => {
         <img src={eraser} width={20} height={20} alt={'eraser'} />
       </StyledButton>
       <Flex alignItems={'center'} gap={'10px'}>
-        <p>Width: </p>
+        <StyledText>Width: </StyledText>
         <WidthInput
           type={'number'}
           value={paintData.pencilWidth}
