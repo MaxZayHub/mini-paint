@@ -14,6 +14,12 @@ import { Rectangle } from '../utils/canvas/rectangle'
 import { Eraser } from '../utils/canvas/eraser'
 import { Circle } from '../utils/canvas/circle'
 import { Line } from '../utils/canvas/line'
+import star from '../assets/star.png'
+import { addImage, getOnePictureFromDb, updateImage } from '../context/imagesContext'
+import { useTypeSelector } from '../hooks/useTypeSelector'
+import { Image } from '../types/image'
+import { nanoid } from 'nanoid'
+import { Star } from '../utils/canvas/star'
 
 interface Props {
   canvasObj: Canvas | null
@@ -56,6 +62,7 @@ const PaintTools = (props: Props) => {
     rectangle: false,
     circle: false,
     line: false,
+    star: false
   })
 
   const [updateInfo, setUpdateInfo] = useState({
@@ -63,7 +70,7 @@ const PaintTools = (props: Props) => {
     needUpdate: false
   })
 
-  //const currentUser = useTypeSelector((state) => state.user.user)
+  const currentUser = useTypeSelector((state) => state.user.user)
 
   const pencilHandler = () => {
     setPaintData({
@@ -73,6 +80,7 @@ const PaintTools = (props: Props) => {
       line: false,
       rectangle: false,
       circle: false,
+      star: false
     })
     if (props.canvasObj) {
       props.setCanvasObj(new Pencil(props.canvasObj?.canvas as HTMLCanvasElement, paintData.color, parseInt(paintData.pencilWidth, 10)))
@@ -99,6 +107,7 @@ const PaintTools = (props: Props) => {
       line: false,
       rectangle: false,
       circle: false,
+      star: false
     })
     if (props.canvasObj) {
       props.setCanvasObj(new Eraser(props.canvasObj?.canvas as HTMLCanvasElement, parseInt(paintData.pencilWidth, 10)))
@@ -113,6 +122,7 @@ const PaintTools = (props: Props) => {
       line: false,
       rectangle: true,
       circle: false,
+      star: false
     })
     props.setCanvasObj(new Rectangle(props.canvasObj?.canvas as HTMLCanvasElement, paintData.color, parseInt(paintData.pencilWidth, 10)))
   }
@@ -125,6 +135,7 @@ const PaintTools = (props: Props) => {
       line: false,
       rectangle: false,
       circle: true,
+      star: false
     })
     props.setCanvasObj(new Circle(props.canvasObj?.canvas as HTMLCanvasElement, paintData.color, parseInt(paintData.pencilWidth, 10)))
   }
@@ -137,32 +148,48 @@ const PaintTools = (props: Props) => {
       line: true,
       rectangle: false,
       circle: false,
+      star: false
     })
     props.setCanvasObj(new Line(props.canvasObj?.canvas as HTMLCanvasElement, paintData.color, parseInt(paintData.pencilWidth, 10)))
   }
 
-  // const saveClickHandler = () => {
-  //   if (props.canvasRef.current) {
-  //     if (updateInfo.needUpdate) {
-  //       getOnePictureFromDb(updateInfo.currentId).then((res) => {
-  //         updateImage({
-  //           idInDb: res?.id,
-  //           id: updateInfo.currentId,
-  //           image: (props.canvasRef.current as unknown as HTMLCanvasElement).toDataURL(),
-  //           userId: currentUser.id
-  //         })
-  //       })
-  //     } else {
-  //       const newImage: Image = {
-  //         id: nanoid(),
-  //         userId: currentUser.id,
-  //         image: (props.canvasRef.current as HTMLCanvasElement).toDataURL(),
-  //       }
-  //       setUpdateInfo((updateInfo) => ({...updateInfo, needUpdate: true, currentId: newImage.id}))
-  //       addImage(newImage)
-  //     }
-  //   }
-  // }
+  const starClickHandler = () => {
+    setPaintData({
+      ...paintData,
+      pencil: false,
+      eraser: false,
+      line: false,
+      rectangle: false,
+      circle: false,
+      star: true
+    })
+    props.setCanvasObj(new Star(props.canvasObj?.canvas as HTMLCanvasElement, paintData.color, parseInt(paintData.pencilWidth, 10)))
+  }
+
+  const saveClickHandler = () => {
+    if (props.canvasObj) {
+      if (updateInfo.needUpdate) {
+        getOnePictureFromDb(updateInfo.currentId).then((res) => {
+          if (props.canvasObj) {
+            updateImage({
+              idInDb: res?.id,
+              id: updateInfo.currentId,
+              image: (props.canvasObj?.canvas).toDataURL(),
+              userId: currentUser.id
+            })
+          }
+        })
+      } else {
+        const newImage: Image = {
+          id: nanoid(),
+          userId: currentUser.id,
+          image: (props.canvasObj.canvas as HTMLCanvasElement).toDataURL(),
+        }
+        setUpdateInfo((updateInfo) => ({...updateInfo, needUpdate: true, currentId: newImage.id}))
+        addImage(newImage)
+      }
+    }
+  }
 
 
   return (
@@ -208,7 +235,10 @@ const PaintTools = (props: Props) => {
       <StyledButton onClick={lineClickHandler} active={paintData.line}>
         <img src={line} width={20} height={20} alt={'line'} />
       </StyledButton>
-      <StyledButton active={false}>
+      <StyledButton onClick={starClickHandler} active={paintData.star}>
+        <img src={star} width={20} height={20} alt={'star'} />
+      </StyledButton>
+      <StyledButton onClick={saveClickHandler} active={false}>
         <img src={save} width={20} height={20} alt={'save'} />
       </StyledButton>
     </Flex>
