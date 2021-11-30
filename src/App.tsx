@@ -12,21 +12,20 @@ interface ThemeContextInterface {
   setChecked: (checked: boolean) => void;
 }
 
+const StyledApp = styled.div`
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: ${(props) => props.theme.colors.appBackground};
+  `
+
 export const ThemeContext = createContext<ThemeContextInterface | null>(null)
 
 function App() {
   const dispatch = useDispatch()
   const [checked, setChecked] = useState<boolean>(false)
-
-  const StyledAdd = styled.div`
-    width: 100%;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    background-color: ${(props) => props.theme.colors.appBackground};
-  `
 
   useEffect(() => {
     getUsersFromDb().then((res) => {
@@ -37,11 +36,11 @@ function App() {
   return (
     <ThemeContext.Provider value={{ checked, setChecked }}>
       <ThemeProvider theme={checked ? light : dark}>
-        <StyledAdd>
+        <StyledApp>
           <BrowserRouter>
             <AppRouter />
           </BrowserRouter>
-        </StyledAdd>
+        </StyledApp>
       </ThemeProvider>
     </ThemeContext.Provider>
   )

@@ -9,6 +9,7 @@ interface Props {
   justifyContent?: string;
   gap?: string;
   alignItems?: string;
+  minHeight?: string;
   children?: React.ReactNode;
 }
 
@@ -25,6 +26,7 @@ const FlexStyled =
   gap: ${(props) => props.gap};
   align-items: ${(props) => props.alignItems};
   user-select: none;
+    min-height: ${(props) => props.minHeight};
 `
 
 const Flex = (props: Props) => {

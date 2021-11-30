@@ -6,7 +6,6 @@ import { useDispatch } from 'react-redux'
 import { getImages } from '../actions-creators/images'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
-import { useTypeSelector } from '../hooks/useTypeSelector'
 
 const StyledButton = styled.button`
   background-color: ${(props) => props.theme.colors.newPictureButton};
@@ -18,6 +17,7 @@ const StyledButton = styled.button`
   font-size: 16px;
   transition: 0.2s;
   cursor: pointer;
+  min-width: 40px;
 
   &:hover {
     transform: scale(1.1);
@@ -34,19 +34,22 @@ const Main = () => {
   }, [dispatch])
 
   return (
-    <Flex
-      width={'100%'}
-      alignItems={'center'}
-      justifyContent={'center'}
-      gap={'30px'}
-    >
-      <ImageFeed />
-      <Link
-        to={'/newPicture'}
-        style={{ alignSelf: 'baseline', marginTop: '100px' }}
+    <Flex justifyContent={'center'} alignItems={'center'}>
+      <Flex
+        width={'100%'}
+        minHeight={'100vh'}
+        alignItems={'flex-start'}
+        justifyContent={'center'}
+        gap={'30px'}
       >
-        <StyledButton>New picture</StyledButton>
-      </Link>
+        <ImageFeed />
+        <Link
+          to={'/newPicture'}
+          style={{marginTop: '100px' }}
+        >
+          <StyledButton>New picture</StyledButton>
+        </Link>
+      </Flex>
     </Flex>
   )
 }

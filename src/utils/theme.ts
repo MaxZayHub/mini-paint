@@ -32,7 +32,7 @@ export const light = {
     navBarBackground: '#e84c3d',
     formSubmitButtonBackground: '#e84c3d',
     formSubmitButtonHoverBackground: 'rgb(248, 118, 105)',
-    logOutButtonBackground: '#2d2d2d',
+    logOutButtonBackground: '#ececec',
     imageFeedBackground: '#e84c3d',
     newPictureButton: '#e84c3d',
     paintToolsBackground: 'white',

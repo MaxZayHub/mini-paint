@@ -69,7 +69,6 @@ const NavBar = () => {
   const switchOnChangeHandler = () => {
     themeContext?.setChecked(!themeContext?.checked)
   }
-  console.log(themeContext?.checked)
 
   return (
     <StyledNavBar>

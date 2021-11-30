@@ -35,7 +35,6 @@ const StyledUsername = styled.h3`
 
 const ImageBlock = (props: Props) => {
   const users = useTypeSelector((state) => state.users.users) as User[]
-
   const user = users.find((user:User) => user.id === props.image.userId)
 
   return (

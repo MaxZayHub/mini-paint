@@ -6,8 +6,7 @@ import NavBar from './NavBar'
 
 const AppRouter = () => {
   const user = useTypeSelector((state) => state.user.user)
-
-  let userIsLogin = user.id !== ''
+  let userIsLogin = !!user.id
 
   return <>
     <NavBar />

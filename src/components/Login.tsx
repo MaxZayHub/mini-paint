@@ -18,9 +18,7 @@ import FormLink from '../styledComponents/FormLink'
 
 const Login = () => {
   const users = useTypeSelector((state) => state.users.users)
-
   const history = useHistory()
-
   const dispatch = useDispatch()
 
   return (
@@ -71,9 +69,7 @@ const Login = () => {
                 <FormTitle>Authorization</FormTitle>
                 <FormBlock>
                   <FormInput name={'email'} placeholder={'Email'} />
-                  {touched.email && errors.email ? (
-                    <FormErrors>{errors.email}</FormErrors>
-                  ) : null}
+                  <FormErrors>{errors.email}</FormErrors>
                 </FormBlock>
                 <FormBlock>
                   <FormInput
@@ -81,9 +77,7 @@ const Login = () => {
                     placeholder={'Password'}
                     type={'password'}
                   />
-                  {touched.password && errors.password ? (
-                    <FormErrors>{errors.password}</FormErrors>
-                  ) : null}
+                  <FormErrors>{errors.password}</FormErrors>
                 </FormBlock>
                 <FormButton>Send</FormButton>
                 <Link to={'/register'} style={{ textDecoration: 'none' }}>

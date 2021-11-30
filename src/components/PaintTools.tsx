@@ -71,12 +71,10 @@ const PaintTools = (props: Props) => {
     star: false,
     polygon: false
   })
-
   const [updateInfo, setUpdateInfo] = useState({
     currentId: '',
     needUpdate: false
   })
-
   const currentUser = useTypeSelector((state) => state.user.user)
 
   const pencilHandler = () => {
