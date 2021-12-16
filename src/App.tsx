@@ -2,7 +2,7 @@ import React, { createContext, useEffect, useState } from 'react'
 import { getUsersFromDb } from './context/usersContext'
 import { useDispatch } from 'react-redux'
 import { getUsers } from './actions-creators/users'
-import AppRouter from './components/AppRouter'
+import AppRouter from './components/AppRouter/AppRouter'
 import { BrowserRouter } from 'react-router-dom'
 import styled, { ThemeProvider } from 'styled-components'
 import { dark, light } from './utils/theme'
@@ -31,7 +31,7 @@ function App() {
     getUsersFromDb().then((res) => {
       dispatch(getUsers(res))
     })
-  }, [])
+  }, [dispatch])
 
   return (
     <ThemeContext.Provider value={{ checked, setChecked }}>
